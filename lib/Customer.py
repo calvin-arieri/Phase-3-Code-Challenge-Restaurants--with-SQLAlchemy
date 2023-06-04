@@ -10,8 +10,20 @@
 #   - returns the full name of the customer, with the given name and the family name concatenated, Western style.
 # - `Customer all()`
 #   - returns **all** of the customer instances
+from sqlalchemy import String, Integer, Column, create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
-class Customer:
+engine = create_engine('sqlite:///customer.db')
+Base = declarative_base()
+Session = sessionmaker(bind=engine)
+session = Session()
+
+class Customer(Base):
+    __tablename__ = 'customers'
+
+    customer_id = Column()
+    
     all_customers = []
 
     def __init__(self, first_name, surname):

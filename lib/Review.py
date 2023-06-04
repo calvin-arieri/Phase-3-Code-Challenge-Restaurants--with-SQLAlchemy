@@ -14,7 +14,7 @@ class Review(Base):
     restaurant = Column(String)
     restaurant_customer = Column(String)
     customer_rating = Column(String)
-    Base.metadata.create_all(engine)
+    
 
     all_reviews = []
     def __init__(self, restaurant, restaurant_customer, customer_rating):
@@ -31,6 +31,7 @@ class Review(Base):
         for review in cls.all_reviews:
             return review
 
+Base.metadata.create_all(engine)
     
 
         
