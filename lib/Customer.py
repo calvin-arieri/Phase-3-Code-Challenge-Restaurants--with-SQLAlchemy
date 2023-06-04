@@ -22,7 +22,9 @@ session = Session()
 class Customer(Base):
     __tablename__ = 'customers'
 
-    customer_id = Column()
+    customer_id = Column(Integer, primary_key=True)
+    first_name = Column(String)
+    surname = Column(String)
     
     all_customers = []
 
@@ -45,7 +47,7 @@ class Customer(Base):
     def all(cls):
        return cls.all_customers 
          
-
+Base.metadata.create_all(engine)
 
 
 
