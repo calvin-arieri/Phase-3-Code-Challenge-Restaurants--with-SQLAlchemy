@@ -18,7 +18,7 @@ class Review(Base):
 
     all_reviews = []
     def __init__(self, restaurant, restaurant_customer, customer_rating):
-        self.restaurant = restaurant
+        self.restaurant_ = restaurant
         self.restaurant_customer = restaurant_customer
         self.customer_rating = customer_rating
         Review.all_reviews.append(self)
@@ -30,6 +30,25 @@ class Review(Base):
     def all(cls):
         for review in cls.all_reviews:
             return review
+
+    def customer(self):
+        engine = create_engine('sqlite:///customer.db')
+        reviewing_customers = engine.execute("SELECT * FROM customers")
+        for theCustomer in reviewing_customers:
+            if theCustomer.first_name == self.restaurant_customer:
+                return theCustomer
+            else:
+                return "customer not found"
+            
+    def restaurant(self):
+        engine = create_engine('sqlite:///restaurant.db')
+        restaurant_reviewed = engine.execute('SELECT * FROM restaurants')
+        for theRestaurant in restaurant_reviewed:
+            if theRestaurant.restaurant_name == self.restaurant_:
+                return theRestaurant
+            else:
+                return 'The restaurant not found'
+            
 
 Base.metadata.create_all(engine)
     
