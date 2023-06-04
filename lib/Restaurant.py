@@ -24,5 +24,24 @@ class Restaurant(Base):
     def name(self):
         return self.restaurant_name
     
+    def reviews(self):
+        engine = create_engine('sqlite:///review.db')
+        the_reviews = engine.execute('SELECT * FROM reviews')
+        for that_review in the_reviews:
+            if that_review.restaurant == self.restaurant_name:
+                return that_review
+            else:
+                return 'restaurant not found'
+
+    def customers(self):
+        engine = create_engine('sqlite:///review.db')
+        the_reviews = engine.execute('SELECT * FROM reviews')
+        for that_review in the_reviews:
+            if that_review.restaurant == self.restaurant_name:
+                return that_review.restaurant_customer 
+            else:
+                return 'restaurant not found'
+                
+    
 Base.metadata.create_all(engine)   
     
