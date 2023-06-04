@@ -1,8 +1,3 @@
-# - `Restaurant __init__()`
-#   - Restaurants should be initialized with a name, as a string
-# - `Restaurant name()`
-#   - returns the restaurant's name
-#   - should not be able to change after the restaurant is created
 from sqlalchemy import String, Integer, Column, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -36,11 +31,13 @@ class Restaurant(Base):
     def customers(self):
         engine = create_engine('sqlite:///review.db')
         the_reviews = engine.execute('SELECT * FROM reviews')
+        customer_who_reviewed = []
         for that_review in the_reviews:
             if that_review.restaurant == self.restaurant_name:
-                return that_review.restaurant_customer 
+                customer_who_reviewed.append(that_review.restaurant_customer) 
             else:
                 return 'restaurant not found'
+        return(set(customer_who_reviewed))    
                 
     
 Base.metadata.create_all(engine)   
