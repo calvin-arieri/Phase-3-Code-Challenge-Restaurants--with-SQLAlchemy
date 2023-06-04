@@ -44,6 +44,8 @@ class Restaurant(Base):
                 return 'restaurant not found'
         return(set(customer_who_reviewed))    
                 
-    
+    def  average_star_rating(self):
+        
+
 Base.metadata.create_all(engine)   
     
