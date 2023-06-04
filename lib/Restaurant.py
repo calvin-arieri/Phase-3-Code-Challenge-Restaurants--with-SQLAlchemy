@@ -45,7 +45,21 @@ class Restaurant(Base):
         return(set(customer_who_reviewed))    
                 
     def  average_star_rating(self):
-        
+        engine = create_engine('sqlite:///review.db')
+        Session = sessionmaker(bind= engine)
+        session = Session()
+        the_reviews = session.query(Review).filter(self.restaurant_name)
+        sum_reviews = 0
+        number_counts = 0
+        for that_review in the_reviews:
+            if that_review.restaurant_name == self.restaurant_name:
+                sum_reviews = sum_reviews + that_review.customer_rating
+                number_counts += 1
+            else:
+                return "No ratings found"
+        average_rating = sum_reviews // number_counts
+        return average_rating        
+           
 
 Base.metadata.create_all(engine)   
     
