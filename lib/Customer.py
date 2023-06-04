@@ -54,7 +54,7 @@ class Customer(Base):
         engine = create_engine('sqlite:///review.db')
         Session = sessionmaker(bind=engine)
         session = Session()
-        new = Review(restaurant=restaurant_, customer_rating=rating, restaurant_customer= self.first_name)
+        new = Review(restaurant_name =restaurant_, customer_rating=rating, restaurant_customer= self.first_name)
         session.add(new)
         session.commit()
         session.close()

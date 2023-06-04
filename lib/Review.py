@@ -13,7 +13,7 @@ class Review(Base):
     __tablename__ = 'reviews'
 
     review_id = Column(Integer, primary_key = True)
-    restaurant = Column(String)
+    restaurant_name = Column(String)
     restaurant_customer = Column(String)
     customer_rating = Column(String)
     
