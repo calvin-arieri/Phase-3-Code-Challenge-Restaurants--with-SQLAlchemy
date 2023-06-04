@@ -59,8 +59,30 @@ class Customer(Base):
         session.commit()
         session.close()
          
+    def num_reviews(self):
+        engine = create_engine('sqlite:///review.db')
+        Session = sessionmaker(bind=engine)
+        session = Session()  
+        number_reviews = session.query(Review).filter(Review.restaurant_customer ==self.first_name).count()              
+        return number_reviews
+    
+    def find_by_name(name):
+        engine = create_engine('sqlite:///customer.db')
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        found_name = session.query(Customer).all()
+        for found in found_name:
+            if f"{found.first_name} {found.surname}" == name:
+                return found.first_name
+            
+    def find_all_given_name(name):
+        engine = create_engine('sqlite:///customer.db')
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        found_name = session.query(Customer).filter(name)
+        for found in found_name:
+            return found.first_name
                 
-         
 Base.metadata.create_all(engine)
 
 
