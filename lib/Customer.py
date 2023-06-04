@@ -1,18 +1,7 @@
-# - `Customer __init__()`
-#   - Customer should be initialized with a given name and family name, both strings (i.e., first and last name, like George Washington)"
-# - `Customer given_name()`
-#   - returns the customer's given name
-#   - should be able to change after the customer is created
-# - `Customer family_name()`
-#   - returns the customer's family name
-#   - should be able to change after the customer is created
-# - `Customer full_name()`
-#   - returns the full name of the customer, with the given name and the family name concatenated, Western style.
-# - `Customer all()`
-#   - returns **all** of the customer instances
 from sqlalchemy import String, Integer, Column, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from Review import Review
 
 engine = create_engine('sqlite:///customer.db')
 Base = declarative_base()
@@ -46,6 +35,31 @@ class Customer(Base):
     @classmethod
     def all(cls):
        return cls.all_customers 
+    
+    def restaurants(self):
+        engine = create_engine('sqlite:///review.db')
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        the_reviews = session.query(Review).all()
+        restaurants_reviewed = []
+        for that_review in the_reviews:
+            if that_review.restaurant_customer == self.first_name:
+                restaurants_reviewed.append(that_review.restaurant) 
+            else:
+                return 'restaurant not found'
+        return(set(restaurants_reviewed))
+         
+    
+    def add_review(self, restaurant_, rating):
+        engine = create_engine('sqlite:///review.db')
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        new = Review(restaurant=restaurant_, customer_rating=rating, restaurant_customer= self.first_name)
+        session.add(new)
+        session.commit()
+        session.close()
+         
+                
          
 Base.metadata.create_all(engine)
 
