@@ -1,6 +1,8 @@
 from sqlalchemy import String, Integer, Column, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from Customer import Customer
+from Restaurant import Restaurant
 
 engine = create_engine('sqlite:///review.db')
 Base = declarative_base()
@@ -33,7 +35,9 @@ class Review(Base):
 
     def customer(self):
         engine = create_engine('sqlite:///customer.db')
-        reviewing_customers = engine.execute("SELECT * FROM customers")
+        Session = sessionmaker(bind=engine)
+        session =Session()
+        reviewing_customers = session.query(Customer).all()
         for theCustomer in reviewing_customers:
             if theCustomer.first_name == self.restaurant_customer:
                 return theCustomer
@@ -42,7 +46,9 @@ class Review(Base):
             
     def restaurant(self):
         engine = create_engine('sqlite:///restaurant.db')
-        restaurant_reviewed = engine.execute('SELECT * FROM restaurants')
+        Session = sessionmaker(bind=engine)
+        session =Session()
+        restaurant_reviewed = session.query(Restaurant).all()
         for theRestaurant in restaurant_reviewed:
             if theRestaurant.restaurant_name == self.restaurant_:
                 return theRestaurant
